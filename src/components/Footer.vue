@@ -83,58 +83,71 @@ onMounted(() => {
 
 <template>
     <footer class="footer">
-        <div class="footer-content">
-            <!-- 左侧：外部链接 -->
-            <div class="footer-section">
-                <div class="external-links">
-                    <el-link :underline="false" href="https://github.com/520MianXiangDuiXiang520" type="info" size="small">
-                        GitHub
-                    </el-link>
-                    <el-divider direction="vertical" />
-                    <el-link :underline="false" href="https://blog.csdn.net/zjbyough" type="info" size="small">
-                        CSDN
-                    </el-link>
-                    <el-divider direction="vertical" />
-                    <el-link :underline="false" href="mailto:15364968962@163.com" type="info" size="small">
-                        Email
-                    </el-link>
+        <div class="footer-container">
+            <!-- 主要内容区域 -->
+            <div class="footer-main">
+                <!-- 品牌和链接区域 -->
+                <div class="footer-content">
+                    <div class="brand-section">
+                        <h3 class="brand-name">JuneBao</h3>
+                        <div class="all-links">
+                            <el-link :underline="false" href="https://github.com/520MianXiangDuiXiang520" target="_blank" class="footer-link">
+                                GitHub
+                            </el-link>
+                            <span class="separator">|</span>
+                            <el-link :underline="false" href="https://blog.csdn.net/zjbyough" target="_blank" class="footer-link">
+                                CSDN
+                            </el-link>
+                            <span class="separator">|</span>
+                            <el-link :underline="false" href="mailto:15364968962@163.com" class="footer-link">
+                                Email
+                            </el-link>
+                            <span class="separator">|</span>
+                            <el-link :underline="false" href="/sitemap.xml" class="footer-link">
+                                SiteMap
+                            </el-link>
+                            
+                            <template v-if="!logined">
+                                <span class="separator">|</span>
+                                <el-link :underline="false" @click="openAdminLoginDialog()" class="footer-link">
+                                    AdminLogin
+                                </el-link>
+                            </template>
+                            
+                            <template v-else>
+                                <span class="separator">|</span>
+                                <el-link :underline="false" @click="doAdminLogoutReq()" class="footer-link">
+                                    Logout
+                                </el-link>
+                                <span class="separator">|</span>
+                                <el-link :underline="false" @click="goNewArticle()" class="footer-link">
+                                    NewArticle
+                                </el-link>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 中间：版权信息和备案号 -->
-            <div class="footer-section">
-                <div class="copyright">
-                    <el-text size="small" type="info">© 2019-{{ year }} JuneBao</el-text>
-                </div>
-                <div class="beian">
-                    <el-link :underline="false" href="https://beian.miit.gov.cn/" type="info" size="small">
-                        陇ICP备20000438号-1
-                    </el-link>
-                </div>
-            </div>
-
-            <!-- 右侧：管理功能 -->
-            <div class="footer-section">
-                <div class="admin-links">
-                    <el-link :underline="false" href="" type="info" size="small">SiteMap</el-link>
-                    
-                    <template v-if="!logined">
-                        <el-divider direction="vertical" />
-                        <el-link :underline="false" @click="openAdminLoginDialog()" type="info" size="small">
-                            AdminLogin
-                        </el-link>
-                    </template>
-                    
-                    <template v-else>
-                        <el-divider direction="vertical" />
-                        <el-link :underline="false" @click="doAdminLogoutReq()" type="info" size="small">
-                            Logout
-                        </el-link>
-                        <el-divider direction="vertical" />
-                        <el-link :underline="false" @click="goNewArticle()" type="info" size="small">
-                            NewArticle
-                        </el-link>
-                    </template>
+            <!-- 底部信息区域 -->
+            <div class="footer-bottom">
+                <div class="bottom-content">
+                    <div class="copyright-info">
+                        <span class="copyright-text">© 2019-{{ year }} JuneBao</span>
+                    </div>
+                    <div class="beian-info">
+                        <div class="beian-item">
+                            <el-link :underline="false" href="https://beian.miit.gov.cn/" target="_blank" class="beian-link">
+                                陇ICP备20000438号-1
+                            </el-link>
+                        </div>
+                        <div class="beian-item gongan-beian">
+                            <img src="/beian.png" alt="公安备案图标" class="beian-icon" />
+                            <el-link :underline="false" href="https://beian.mps.gov.cn/#/query/webSearch?code=51010702043658" rel="noreferrer" target="_blank" class="beian-link">
+                                川公网安备51010702043658号
+                            </el-link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -164,76 +177,219 @@ onMounted(() => {
 
 <style scoped>
 .footer {
-    margin-top: 60px;
-    padding: 20px 0;
-    border-top: 1px solid var(--el-border-color-lighter);
-    background-color: var(--el-bg-color);
+    margin-top: 40px;
+    background-color: var(--bPageBgColor);
+    border-top: 1px solid var(--menuBorderColor);
+    color: var(--bTextColor);
+    position: relative;
 }
 
-.footer-content {
+.footer-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+.footer-main {
+    padding: 30px 0;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--titleColor);
+}
+
+.all-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.separator {
+    color: var(--bTextColor);
+    opacity: 0.4;
+    font-size: 11px;
+    margin: 0 2px;
+}
+
+/* 底部区域 */
+.footer-bottom {
+    padding: 0;
+    background-color: transparent;
+}
+
+.bottom-content {
+    display: flex;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.footer-section {
+.copyright-info {
+    order: 2;
+}
+
+.copyright-text {
+    font-size: 12px;
+    color: var(--bTextColor);
+    opacity: 0.7;
+}
+
+.beian-info {
     display: flex;
-    flex-direction: column;
+    gap: 15px;
     align-items: center;
-    gap: 8px;
+    order: 1;
 }
 
-.copyright {
-    text-align: center;
-}
-
-.beian {
-    text-align: center;
-}
-
-.external-links {
+.footer-link {
+    color: var(--bTextColor) !important;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    padding: 2px 0;
+    position: relative;
+    opacity: 0.8;
 }
 
-.admin-links {
+.footer-link:hover {
+    color: var(--titleColor) !important;
+    opacity: 1;
+    transform: translateX(3px);
+}
+
+.beian-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
 }
+
+.gongan-beian {
+    gap: 6px;
+}
+
+.beian-link {
+    color: var(--bTextColor) !important;
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    opacity: 0.8;
+}
+
+.beian-link:hover {
+    color: var(--titleColor) !important;
+    opacity: 1;
+}
+
+.beian-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.8;
+}
+
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .footer-content {
+    .footer-main {
+        padding: 25px 0;
+        gap: 15px;
+    }
+    
+    .brand-section {
+        gap: 12px;
+    }
+    
+    .all-links {
+        gap: 8px;
+    }
+    
+    .brand-name {
+        font-size: 20px;
+    }
+    
+    .bottom-content {
         flex-direction: column;
-        gap: 16px;
+        text-align: center;
+        gap: 12px;
     }
     
-    .footer-section {
-        width: 100%;
+    .beian-info {
+        flex-direction: column;
+        gap: 8px;
+        order: 1;
     }
     
-    .external-links,
-    .admin-links {
-        justify-content: center;
+    .copyright-info {
+        order: 2;
     }
 }
 
-/* 链接悬停效果 */
-.el-link:hover {
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 0 15px;
+    }
+    
+    .footer-main {
+        padding: 20px 0;
+        gap: 12px;
+    }
+    
+    .brand-name {
+        font-size: 18px;
+    }
+    
+    .all-links {
+        gap: 6px;
+    }
+    
+    .footer-link {
+        font-size: 12px;
+    }
+    
+    .bottom-content {
+        gap: 10px;
+    }
 }
 
-/* 分割线样式 */
-.el-divider--vertical {
-    height: 14px;
-    margin: 0 4px;
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-main > * {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.footer-main > *:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.footer-main > *:nth-child(3) {
+    animation-delay: 0.1s;
 }
 </style>
